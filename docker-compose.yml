@@ -1,0 +1,33 @@
+services:
+  app:
+    image: lscr.io/linuxserver/changedetection.io:latest
+    env_file:
+      - .env
+    volumes:
+      - app_data:/config
+    networks:
+      - proxy_apps
+      - default
+    depends_on:
+      playwright-chrome:
+        condition: service_started
+    restart: unless-stopped
+
+  playwright:
+    image: dgtlmoon/sockpuppetbrowser:latest
+    environment:
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1080
+      - SCREEN_DEPTH=16
+      - MAX_CONCURRENT_CHROME_PROCESSES=10
+    networks:
+      - default
+    restart: unless-stopped
+
+networks:
+  proxy_apps:
+    name: proxy_apps
+    external: true
+
+volumes:
+  app_data:
