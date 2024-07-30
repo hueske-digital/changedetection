@@ -9,7 +9,7 @@ services:
       - proxy_apps
       - default
     depends_on:
-      playwright-chrome:
+      playwright:
         condition: service_started
     restart: unless-stopped
 
